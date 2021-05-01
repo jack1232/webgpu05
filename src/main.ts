@@ -9,9 +9,8 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
         throw('Your current browser does not support WebGPU!');
     }
 
-    let topology = primitiveType;
     let indexFormat = undefined;
-    if(primitiveType.includes('list')){
+    if(primitiveType === 'line-strip'){
         indexFormat = 'uint32'
     }
     
@@ -40,7 +39,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
             }),
             entryPoint: "main"
         },
-        primitiveTopology: topology as GPUPrimitiveTopology,
+        primitiveTopology: primitiveType as GPUPrimitiveTopology,
         colorStates: [{
             format: swapChainFormat
         }],
@@ -58,7 +57,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
         }]
     });
     renderPass.setPipeline(pipeline);
-    renderPass.draw(3, 1, 0, 0);
+    renderPass.draw(6, 1, 0, 0);
     renderPass.endPass();
     
     device.queue.submit([commandEncoder.finish()]);
@@ -66,7 +65,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
 
 CreatePrimitive();
 $('#id-primitive').on('change', ()=>{
-    const primitiveType = (this as any).value
+    const primitiveType = $('#id-primitive').val() as string;
     CreatePrimitive(primitiveType);
 });
 
