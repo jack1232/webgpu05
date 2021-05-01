@@ -3,4 +3,7 @@
 
 This is the source code for the fifth part of a series YouTube videos on step-by-step WebGPU graphics programming.
 
-This sample WebGPU app shows how to create point and line primitives.
+This sample WebGPU app shows how to create point and line primitives. The output from the app is shown in the following image.
+
+![image01](dist/assets/image01.png)
+
