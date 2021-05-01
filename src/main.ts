@@ -2,11 +2,17 @@ import $ from 'jquery';
 import { CheckWebGPU } from './helper';
 import { Shaders } from './shaders';
 
-const CreateTriangle = async (color='(1.0,1.0,1.0,1.0)') => { 
+const CreatePrimitive = async (primitiveType = 'point-list') => { 
     const checkgpu = CheckWebGPU();
     if(checkgpu.includes('Your current browser does not support WebGPU!')){
         console.log(checkgpu);
         throw('Your current browser does not support WebGPU!');
+    }
+
+    let topology = primitiveType;
+    let indexFormat = undefined;
+    if(primitiveType.includes('list')){
+        indexFormat = 'uint32'
     }
     
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
@@ -20,7 +26,7 @@ const CreateTriangle = async (color='(1.0,1.0,1.0,1.0)') => {
         format: swapChainFormat,
     });
 
-    const shader = Shaders(color);
+    const shader = Shaders();
     const pipeline = device.createRenderPipeline({
         vertexStage: {
             module: device.createShaderModule({
@@ -34,10 +40,13 @@ const CreateTriangle = async (color='(1.0,1.0,1.0,1.0)') => {
             }),
             entryPoint: "main"
         },
-        primitiveTopology: "triangle-list",
+        primitiveTopology: topology as GPUPrimitiveTopology,
         colorStates: [{
             format: swapChainFormat
-        }]
+        }],
+        vertexState:{
+            indexFormat: indexFormat as GPUIndexFormat
+        }
     });
 
     const commandEncoder = device.createCommandEncoder();
@@ -55,10 +64,10 @@ const CreateTriangle = async (color='(1.0,1.0,1.0,1.0)') => {
     device.queue.submit([commandEncoder.finish()]);
 }
 
-CreateTriangle();
-$('#id-btn').on('click', ()=>{
-    const color = $('#id-color').val() as string;
-    CreateTriangle(color);
+CreatePrimitive();
+$('#id-primitive').on('change', ()=>{
+    const primitiveType = (this as any).value
+    CreatePrimitive(primitiveType);
 });
 
 
