@@ -51,10 +51,12 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
 
     const commandEncoder = device.createCommandEncoder();
     const textureView = swapChain.getCurrentTexture().createView();
+    
     const renderPass = commandEncoder.beginRenderPass({
         colorAttachments: [{
-            attachment: textureView,
-            loadValue: [0.5, 0.5, 0.8, 1] //background color
+            view: textureView as GPUTextureView,
+            loadValue: [0.5, 0.5, 0.8, 1], //background color
+            storeOp: 'store'
         }]
     });
     renderPass.setPipeline(pipeline);
