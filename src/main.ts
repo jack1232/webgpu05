@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { format } from 'path';
 import { CheckWebGPU } from './helper';
 import { Shaders } from './shaders';
 
@@ -60,7 +59,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
         }]
     });
     renderPass.setPipeline(pipeline);
-    renderPass.draw(6, 1, 0, 0);
+    renderPass.draw(6);
     renderPass.endPass();
     
     device.queue.submit([commandEncoder.finish()]);

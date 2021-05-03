@@ -7,7 +7,7 @@ export const Shaders = () => {
         vec2<f32>( 0.4, -0.5),
         vec2<f32>(-0.4, -0.4),
         vec2<f32>(-0.3,  0.2)
-        );
+    );
 
     [[builtin(position)]] var<out> Position : vec4<f32>;
     [[builtin(vertex_idx)]] var<in> VertexIndex : i32;
