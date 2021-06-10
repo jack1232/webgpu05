@@ -7,3 +7,6 @@ This sample WebGPU app shows how to create point and line primitives. The output
 
 ![image01](dist/assets/image01.png)
 
+## Link for All Source Code Used in the WebGPU Step-By-Step Video Series:
+
+https://github.com/jack1232/WebGPU-Step-By-Step
