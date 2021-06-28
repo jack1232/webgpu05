@@ -17,12 +17,12 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
     const adapter = await navigator.gpu?.requestAdapter() as GPUAdapter;       
     const device = await adapter?.requestDevice() as GPUDevice;
-    const context = canvas.getContext('gpupresent') as unknown as GPUCanvasContext;
+    const context = canvas.getContext('gpupresent') as GPUPresentationContext;
 
-    const swapChainFormat = 'bgra8unorm';
-    const swapChain = context.configureSwapChain({
+    const format = 'bgra8unorm';
+    context.configure({
         device: device,
-        format: swapChainFormat,
+        format: format,
     });
 
     const shader = Shaders();
@@ -39,7 +39,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
             }),
             entryPoint: "main",
             targets: [{
-                format: swapChainFormat as GPUTextureFormat
+                format: format as GPUTextureFormat
             }]
         },
         primitive:{
@@ -49,7 +49,7 @@ const CreatePrimitive = async (primitiveType = 'point-list') => {
     });
 
     const commandEncoder = device.createCommandEncoder();
-    const textureView = swapChain.getCurrentTexture().createView();
+    const textureView = context.getCurrentTexture().createView();
     
     const renderPass = commandEncoder.beginRenderPass({
         colorAttachments: [{
